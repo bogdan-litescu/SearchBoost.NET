@@ -1,0 +1,9 @@
+
+/!Lib/
+bin/**
+obj/**
+**/bin/**
+**/obj/**
+
+*.suo
+*.user
