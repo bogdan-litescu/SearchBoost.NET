@@ -1,9 +1,8 @@
 
-/!Lib/
-bin/**
-obj/**
-**/bin/**
-**/obj/**
+src/**/bin/**
+src/**/obj/**
+src/**/data/**
+src/**/logs/**
 
 *.suo
 *.user
