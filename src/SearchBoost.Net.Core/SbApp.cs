@@ -12,7 +12,7 @@ namespace SearchBoost.Net.Core
 {
     public class SbApp : IDisposable
     {
-        WindsorContainer _Container = null;
+        public WindsorContainer Container { get; private set; }
         public ILogger Logger { get; private set; }
         public ISearchEngine SearchEngine { get; private set; }
 
@@ -50,15 +50,16 @@ namespace SearchBoost.Net.Core
                 RootFolder = AssemblyDirectory;
 
             // initialize the container
-            _Container = new WindsorContainer(new XmlInterpreter(Path.Combine(ConfigFolder.TrimEnd('\\'), "sb.config")));
+            Container = new WindsorContainer(new XmlInterpreter(Path.Combine(ConfigFolder.TrimEnd('\\'), "sb.config")));
+            Container.Install();
 
             try {
-                Logger = _Container.Resolve<ILogger>();
+                Logger = Container.Resolve<ILogger>();
             } catch (Castle.MicroKernel.ComponentNotFoundException) { }
             Logger.Info("-----------------SearchBoost app started!----------------------");
 
             // resolve root component
-            SearchEngine = _Container.Resolve<ISearchEngine>(); 
+            SearchEngine = Container.Resolve<ISearchEngine>(); 
         }
 
         ~SbApp() // called by GC
@@ -83,8 +84,8 @@ namespace SearchBoost.Net.Core
                 // If disposing equals true, dispose all managed and unmanaged resources.
                 if (disposing) {
                     // Dispose managed resources.
-                    if (_Container != null)
-                        _Container.Dispose();
+                    if (Container != null)
+                        Container.Dispose();
                 }
 
                 // Call the appropriate methods to clean up unmanaged resources here.

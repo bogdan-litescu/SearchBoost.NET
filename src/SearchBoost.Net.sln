@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchBoost.Net.Core", "Sea
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchBoost.Net.Tests.Cli", "SearchBoost.Net.Tests.Cli\SearchBoost.Net.Tests.Cli.csproj", "{A0A22BCA-3EA1-4386-9270-12DB0E3565BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchBoost.Net.Tests.CliWcfHost", "SearchBoost.Net.Tests.CliWcfHost\SearchBoost.Net.Tests.CliWcfHost.csproj", "{C78081B6-1FAF-41E1-80E0-C98AE7DE5279}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,16 @@ Global
 		{A0A22BCA-3EA1-4386-9270-12DB0E3565BE}.Release|Mixed Platforms.Build.0 = Release|x86
 		{A0A22BCA-3EA1-4386-9270-12DB0E3565BE}.Release|x86.ActiveCfg = Release|x86
 		{A0A22BCA-3EA1-4386-9270-12DB0E3565BE}.Release|x86.Build.0 = Release|x86
+		{C78081B6-1FAF-41E1-80E0-C98AE7DE5279}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{C78081B6-1FAF-41E1-80E0-C98AE7DE5279}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{C78081B6-1FAF-41E1-80E0-C98AE7DE5279}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{C78081B6-1FAF-41E1-80E0-C98AE7DE5279}.Debug|x86.ActiveCfg = Debug|x86
+		{C78081B6-1FAF-41E1-80E0-C98AE7DE5279}.Debug|x86.Build.0 = Debug|x86
+		{C78081B6-1FAF-41E1-80E0-C98AE7DE5279}.Release|Any CPU.ActiveCfg = Release|x86
+		{C78081B6-1FAF-41E1-80E0-C98AE7DE5279}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{C78081B6-1FAF-41E1-80E0-C98AE7DE5279}.Release|Mixed Platforms.Build.0 = Release|x86
+		{C78081B6-1FAF-41E1-80E0-C98AE7DE5279}.Release|x86.ActiveCfg = Release|x86
+		{C78081B6-1FAF-41E1-80E0-C98AE7DE5279}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

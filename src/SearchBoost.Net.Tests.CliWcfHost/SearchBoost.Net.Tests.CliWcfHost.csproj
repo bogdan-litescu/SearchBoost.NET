@@ -2,18 +2,21 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{32BB1070-BA33-46FD-A896-099E4B45B234}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{C78081B6-1FAF-41E1-80E0-C98AE7DE5279}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SearchBoost.Net.Core</RootNamespace>
-    <AssemblyName>SearchBoost.Net.Core</AssemblyName>
+    <RootNamespace>SearchBoost.Net.Tests.CliWcfHost</RootNamespace>
+    <AssemblyName>SearchBoost.Net.Tests.CliWcfHost</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,7 +25,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,24 +35,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core">
-      <HintPath>..\..\lib\Windsor\Castle.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Castle.Facilities.Logging">
       <HintPath>..\..\lib\Windsor\loggingFacility\Castle.Facilities.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Facilities.WcfIntegration">
       <HintPath>..\..\lib\Windsor\wcfIntegrationFacility\Castle.Facilities.WcfIntegration.dll</HintPath>
     </Reference>
-    <Reference Include="Castle.Windsor">
-      <HintPath>..\..\lib\Windsor\Castle.Windsor.dll</HintPath>
+    <Reference Include="Castle.Services.Logging.NLogIntegration">
+      <HintPath>..\..\lib\Windsor\loggingFacility\Castle.Services.Logging.NLogIntegration.dll</HintPath>
     </Reference>
-    <Reference Include="Lucene.Net">
-      <HintPath>..\..\lib\Lucene\Lucene.Net.dll</HintPath>
+    <Reference Include="NLog">
+      <HintPath>..\..\lib\Windsor\loggingFacility\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog.Extended">
+      <HintPath>..\..\lib\Windsor\loggingFacility\NLog.Extended.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -57,17 +60,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Engine\ISearchEngine.cs" />
-    <Compile Include="Engine\SearchEngine.cs" />
-    <Compile Include="Installers\ServicesInstaller.cs" />
-    <Compile Include="Services\ISearchService.cs" />
-    <Compile Include="Services\SearchService.cs" />
-    <Compile Include="Services\IIndexingService.cs" />
-    <Compile Include="SbApp.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\IndexingService.cs" />
-    <Compile Include="Storage\ISearchIndexStorage.cs" />
-    <Compile Include="Storage\LuceneStorage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SearchBoost.Net.Core\SearchBoost.Net.Core.csproj">
+      <Project>{32BB1070-BA33-46FD-A896-099E4B45B234}</Project>
+      <Name>SearchBoost.Net.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
