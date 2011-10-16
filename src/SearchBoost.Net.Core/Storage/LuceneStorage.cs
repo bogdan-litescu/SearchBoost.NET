@@ -11,6 +11,7 @@ using Lucene.Net.Analysis;
 using Lucene.Net.Search;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Store;
+using SearchBoost.Net.Core.Engine;
 
 namespace SearchBoost.Net.Core.Storage
 {
@@ -28,9 +29,9 @@ namespace SearchBoost.Net.Core.Storage
         public ILogger Logger { get; set; }
         Lucene.Net.Store.Directory _indexdir;
 
-        public void Index(string content)
+        public void Index(SbSearchDoc indexDoc)
         {
-            Logger.Debug(string.Format("Indexing content {0}...", content));
+            Logger.Debug(string.Format("Indexing content {0}...", indexDoc.Content));
 
             //create an analyzer to process the text
             Analyzer analyzer = new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_29);
@@ -40,7 +41,7 @@ namespace SearchBoost.Net.Core.Storage
 
             //create a document, add in a single field
             Document doc = new Document();
-            doc.Add(new Field("content", content, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+            doc.Add(new Field("content", indexDoc.Content, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
 
             //write the document to the index
             indexWriter.AddDocument(doc);
@@ -52,7 +53,7 @@ namespace SearchBoost.Net.Core.Storage
             Logger.Debug("...done.");
         }
 
-        public IList<string> Search(string terms)
+        public IList<SbSearchDoc> Search(string terms)
         {
             Logger.Info(string.Format("Searching for {0}...", terms));
             IndexSearcher searcher = new IndexSearcher(_indexdir, true);
@@ -60,9 +61,9 @@ namespace SearchBoost.Net.Core.Storage
             Query query = parser.Parse(terms);
 
             TopDocs docs = searcher.Search(query, 999999);
-            List<string> results = new List<string>();
+            List<SbSearchDoc> results = new List<SbSearchDoc>();
             foreach (ScoreDoc sdoc in docs.scoreDocs)
-                results.Add(searcher.Doc(sdoc.doc).Get("content"));
+                results.Add(new SbSearchDoc() { Content = searcher.Doc(sdoc.doc).Get("content") });
             
             Logger.Info(string.Format("...{0} results found", results.Count));
 

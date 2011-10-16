@@ -5,14 +5,23 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using SearchBoost.Net.Core.Engine;
+using Castle.Core.Logging;
 
 namespace SearchBoost.Net.Core.Services
 {
     public class SearchService : ISearchService
     {
-        public IList<string> Search(string terms)
+        public SearchService(ILogger logger, string remote)
         {
-            return SbApp.Instance.SearchEngine.Storage.Search(terms);
+            
+        }
+
+        public ILogger Logger { get; set; }
+        public ISearchEngine SearchEngine { get; set; }
+        
+        public IList<SbSearchDoc> Search(string terms)
+        {
+            return SearchEngine.Search(terms);
         }
 
     }

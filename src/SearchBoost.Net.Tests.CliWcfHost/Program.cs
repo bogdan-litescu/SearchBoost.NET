@@ -6,6 +6,7 @@ using System.ServiceModel;
 using SearchBoost.Net.Core.Services;
 using SearchBoost.Net.Core;
 using System.IO;
+using SearchBoost.Net.Core.Engine;
 
 namespace SearchBoost.Net.Tests.CliWcfHost
 {
@@ -18,13 +19,13 @@ namespace SearchBoost.Net.Tests.CliWcfHost
 
             using (SbApp app = SbApp.Instance) {
 
-                app.SearchEngine.Storage.Index("This is actually another index on the remote server that has the word container");
+                app.SearchEngine.Index(new SbSearchDoc() { Content = "This is actually another index on the remote server that has the word container" });
 
                 Console.WriteLine("Running service... (press any key to end service)");
-                Console.ReadLine();
+                Console.ReadKey(true);
 
                 // delete the index
-                app.SearchEngine.Storage.ClearIndex();
+                app.SearchEngine.ClearIndex();
             }
         }
     }

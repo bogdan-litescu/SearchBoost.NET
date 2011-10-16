@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using SearchBoost.Net.Core.Engine;
 
 namespace SearchBoost.Net.Core.Services
 {
@@ -11,6 +12,6 @@ namespace SearchBoost.Net.Core.Services
     public interface ISearchService
     {
         [OperationContract]
-        IList<string> Search(string terms);
+        IList<SbSearchDoc> Search(string terms);
     }
 }

@@ -8,6 +8,13 @@ namespace SearchBoost.Net.Core.Engine
 {
     public interface ISearchEngine
     {
-        ISearchIndexStorage Storage { get; }
+        void IndexAsync(SbSearchDoc indexDoc, Action<bool> onComplete);
+        bool Index(SbSearchDoc indexDoc);
+        
+        void SearchAsync(string searchTerms, Action<IList<SbSearchDoc>> onReceiveResults);
+        IList<SbSearchDoc> Search(string searchTerms);
+
+        void ClearIndexAsync(Action<bool> onComplete);
+        bool ClearIndex();
     }
 }

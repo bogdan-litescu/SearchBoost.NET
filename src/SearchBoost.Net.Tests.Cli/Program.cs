@@ -6,6 +6,7 @@ using SearchBoost.Net.Core;
 using System.IO;
 using SearchBoost.Net.Core.Services;
 using Castle.Facilities.WcfIntegration;
+using SearchBoost.Net.Core.Engine;
 
 namespace SearchBoost.Net.Tests.Cli
 {
@@ -19,33 +20,40 @@ namespace SearchBoost.Net.Tests.Cli
             using (SbApp app = SbApp.Instance) {
                 
                 // index some content
-                app.SearchEngine.Storage.Index("This is windsor container");
-                app.SearchEngine.Storage.Index("Something is somewhere");
-                app.SearchEngine.Storage.Index("Container container container");
+                app.SearchEngine.Index(new SbSearchDoc() { Content = "This is windsor container" });
+                app.SearchEngine.Index(new SbSearchDoc() { Content = "Something is somewhere" });
+                app.SearchEngine.Index(new SbSearchDoc() { Content = "Container container container"});
 
                 // do a search
                 Console.WriteLine("Searching local index...");
-                printResults(app.SearchEngine.Storage.Search("container"));
+                printResults(app.SearchEngine.Search("container"));
 
                 // now search again using the wcf service
-                Console.WriteLine("Searching remote index...");
-                var client = app.Container.Resolve<ISearchService>();
-                client.BeginWcfCall(
-                    c => c.Search("container"), 
-                    asyncCall => printResults(asyncCall.End()), 
-                    null);
+                try {
+                    Console.WriteLine("Searching remote index...");
+                    var client = app.Container.Resolve<ISearchService>();
+                    var wcfCall = client.BeginWcfCall(
+                        c => c.Search("container"),
+                        asyncCall => printResults(asyncCall.End()),
+                        null);
+                    wcfCall.End();
+
+                } catch (Exception ex) {
+                    Console.WriteLine("Error searching through wcf service! (check logs for more info)");
+                    SbApp.Instance.Logger.Error("Error searching through wcf service!", ex);
+                }
 
                 // delete the index
-                app.SearchEngine.Storage.ClearIndex();
+                app.SearchEngine.ClearIndex();
             }
 
             Console.ReadKey(true);
         }
 
-        private static void printResults(IList<string> results)
+        private static void printResults(IList<SbSearchDoc> results)
         {
-            foreach (string result in results)
-                Console.WriteLine(result);
+            foreach (SbSearchDoc result in results)
+                Console.WriteLine(result.Content);
         }
     }
 }

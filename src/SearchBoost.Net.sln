@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchBoost.Net.Tests.Cli",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchBoost.Net.Tests.CliWcfHost", "SearchBoost.Net.Tests.CliWcfHost\SearchBoost.Net.Tests.CliWcfHost.csproj", "{C78081B6-1FAF-41E1-80E0-C98AE7DE5279}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{58A52645-007D-4682-B268-826ABF0FBA50}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests.Cli", "Tests.Cli", "{4A64A8FF-4227-4CD7-BA38-65E93770C6C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchBoost.Net.Tests.CliRemoteClient", "SearchBoost.Net.Tests.CliRemoteClient\SearchBoost.Net.Tests.CliRemoteClient.csproj", "{31155E5A-964E-4B0D-8D39-447023DD8AB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,8 +53,23 @@ Global
 		{C78081B6-1FAF-41E1-80E0-C98AE7DE5279}.Release|Mixed Platforms.Build.0 = Release|x86
 		{C78081B6-1FAF-41E1-80E0-C98AE7DE5279}.Release|x86.ActiveCfg = Release|x86
 		{C78081B6-1FAF-41E1-80E0-C98AE7DE5279}.Release|x86.Build.0 = Release|x86
+		{31155E5A-964E-4B0D-8D39-447023DD8AB3}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{31155E5A-964E-4B0D-8D39-447023DD8AB3}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{31155E5A-964E-4B0D-8D39-447023DD8AB3}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{31155E5A-964E-4B0D-8D39-447023DD8AB3}.Debug|x86.ActiveCfg = Debug|x86
+		{31155E5A-964E-4B0D-8D39-447023DD8AB3}.Debug|x86.Build.0 = Debug|x86
+		{31155E5A-964E-4B0D-8D39-447023DD8AB3}.Release|Any CPU.ActiveCfg = Release|x86
+		{31155E5A-964E-4B0D-8D39-447023DD8AB3}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{31155E5A-964E-4B0D-8D39-447023DD8AB3}.Release|Mixed Platforms.Build.0 = Release|x86
+		{31155E5A-964E-4B0D-8D39-447023DD8AB3}.Release|x86.ActiveCfg = Release|x86
+		{31155E5A-964E-4B0D-8D39-447023DD8AB3}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C78081B6-1FAF-41E1-80E0-C98AE7DE5279} = {4A64A8FF-4227-4CD7-BA38-65E93770C6C2}
+		{31155E5A-964E-4B0D-8D39-447023DD8AB3} = {4A64A8FF-4227-4CD7-BA38-65E93770C6C2}
+		{A0A22BCA-3EA1-4386-9270-12DB0E3565BE} = {4A64A8FF-4227-4CD7-BA38-65E93770C6C2}
 	EndGlobalSection
 EndGlobal
