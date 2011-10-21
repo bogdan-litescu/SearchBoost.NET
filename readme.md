@@ -12,6 +12,7 @@ Status
 The Search Boost .NET project is currently under development.
 The source code from master branch is functional but not sufficient to use in production.
 
+Make sure to connect to our [development tracker](https://www.pivotaltracker.com/projects/390909) to check on our status.
 
 License
 =======

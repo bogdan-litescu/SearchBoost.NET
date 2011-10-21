@@ -33,6 +33,7 @@ using Castle.Windsor.Configuration.Interpreters;
 using Castle.Core.Logging;
 using System.IO;
 using SearchBoost.Net.Core.Engine;
+using SearchBoost.Net.Core.Publishers;
 
 namespace SearchBoost.Net.Core
 {
@@ -41,6 +42,7 @@ namespace SearchBoost.Net.Core
         public WindsorContainer Container { get; private set; }
         public ILogger Logger { get; private set; }
         public ISearchEngine SearchEngine { get; private set; }
+        public IList<IContentPublisher> Publishers { get; private set; }
 
         static public string RootFolder { get; set; }
         static public string ConfigFolder { get; set; }
@@ -86,6 +88,9 @@ namespace SearchBoost.Net.Core
 
             // resolve root component
             SearchEngine = Container.Resolve<ISearchEngine>(); 
+
+            // resolve list of content publishers
+            Publishers = Container.ResolveAll<IContentPublisher>();
         }
 
         ~SbApp() // called by GC

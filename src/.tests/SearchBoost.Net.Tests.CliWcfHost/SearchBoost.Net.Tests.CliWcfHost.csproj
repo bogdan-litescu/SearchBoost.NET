@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{31155E5A-964E-4B0D-8D39-447023DD8AB3}</ProjectGuid>
+    <ProjectGuid>{C78081B6-1FAF-41E1-80E0-C98AE7DE5279}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SearchBoost.Net.Tests.CliRemoteClient</RootNamespace>
-    <AssemblyName>SearchBoost.Net.Tests.CliRemoteClient</AssemblyName>
+    <RootNamespace>SearchBoost.Net.Tests.CliWcfHost</RootNamespace>
+    <AssemblyName>SearchBoost.Net.Tests.CliWcfHost</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -35,9 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core">
-      <HintPath>..\..\lib\Windsor\Castle.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Castle.Facilities.Logging">
       <HintPath>..\..\lib\Windsor\loggingFacility\Castle.Facilities.Logging.dll</HintPath>
     </Reference>
@@ -46,9 +43,6 @@
     </Reference>
     <Reference Include="Castle.Services.Logging.NLogIntegration">
       <HintPath>..\..\lib\Windsor\loggingFacility\Castle.Services.Logging.NLogIntegration.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.Windsor">
-      <HintPath>..\..\lib\Windsor\Castle.Windsor.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\..\lib\Windsor\loggingFacility\NLog.dll</HintPath>
@@ -70,7 +64,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SearchBoost.Net.Core\SearchBoost.Net.Core.csproj">
+    <ProjectReference Include="..\..\SearchBoost.Net.Core\SearchBoost.Net.Core.csproj">
       <Project>{32BB1070-BA33-46FD-A896-099E4B45B234}</Project>
       <Name>SearchBoost.Net.Core</Name>
     </ProjectReference>
