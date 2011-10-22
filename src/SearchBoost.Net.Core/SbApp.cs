@@ -34,6 +34,7 @@ using Castle.Core.Logging;
 using System.IO;
 using SearchBoost.Net.Core.Engine;
 using SearchBoost.Net.Core.Publishers;
+using SearchBoost.Net.Core.ContentParsing;
 
 namespace SearchBoost.Net.Core
 {
@@ -130,5 +131,6 @@ namespace SearchBoost.Net.Core
         }
 
         #endregion
+
     }
 }

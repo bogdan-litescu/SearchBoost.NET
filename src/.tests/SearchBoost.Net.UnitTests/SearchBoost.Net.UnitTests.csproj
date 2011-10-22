@@ -37,6 +37,10 @@
     <Reference Include="Castle.Services.Logging.NLogIntegration">
       <HintPath>..\..\..\lib\Windsor\loggingFacility\Castle.Services.Logging.NLogIntegration.dll</HintPath>
     </Reference>
+    <Reference Include="Castle.Windsor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Windsor\Castle.Windsor.dll</HintPath>
+    </Reference>
     <Reference Include="NLog">
       <HintPath>..\..\..\lib\Windsor\loggingFacility\NLog.dll</HintPath>
     </Reference>

@@ -53,13 +53,32 @@ namespace SearchBoost.Net.UnitTests
         }
 
         [Test]
-        public void Basic()
+        public void PlainText()
         {
             ISearchEngine se = SbApp.Instance.SearchEngine;
-            IContentPublisher webSpider = SbApp.Instance.Publishers.Where(x => x.GetType() == typeof(WebSpider.Crawler)).First();
+            IContentPublisher webSpiderPlain = SbApp.Instance.Container.Resolve<IContentPublisher>("webSpiderPlain");
 
             // execute URLs from configuration
-            webSpider.Publish();
+            webSpiderPlain.Publish();
+
+            // do a search
+            Assert.AreEqual(1, se.Search("information").Count);
+            Assert.AreEqual(0, se.Search("zxcvbnm").Count);
+
+            // clear index
+            se.ClearIndex();
+            Assert.AreEqual(0, se.Search("information").Count);
+            Assert.AreEqual(0, se.Search("zxcvbnm").Count);
+        }
+
+        [Test]
+        public void BasicHtml()
+        {
+            ISearchEngine se = SbApp.Instance.SearchEngine;
+            IContentPublisher webSpiderHtml = SbApp.Instance.Container.Resolve<IContentPublisher>("webSpiderHtml");
+
+            // execute URLs from configuration
+            webSpiderHtml.Publish();
 
             // do a search
             Assert.AreEqual(1, se.Search("Twitter").Count);

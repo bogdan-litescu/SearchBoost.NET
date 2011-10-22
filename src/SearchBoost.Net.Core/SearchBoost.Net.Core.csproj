@@ -43,6 +43,9 @@
     <Reference Include="Castle.Windsor">
       <HintPath>..\..\lib\Windsor\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\..\lib\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\..\lib\Lucene\Lucene.Net.dll</HintPath>
     </Reference>
@@ -57,6 +60,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContentParsing\ParsedLink.cs" />
+    <Compile Include="ContentParsing\ParsedContent.cs" />
+    <Compile Include="ContentParsing\HtmlParser.cs" />
+    <Compile Include="ContentParsing\FindParser.cs" />
+    <Compile Include="ContentParsing\IContentParser.cs" />
+    <Compile Include="ContentParsing\PlainText.cs" />
     <Compile Include="Engine\ISearchEngine.cs" />
     <Compile Include="Engine\SbSearchDoc.cs" />
     <Compile Include="Engine\SearchEngine.cs" />

@@ -28,19 +28,44 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using SearchBoost.Net.Core.Engine;
+using System.Xml;
 
-namespace SearchBoost.Net.Core.Engine
+namespace SearchBoost.Net.Core.ContentParsing
 {
-    public class SbSearchDoc
+    public class ParsedLink
     {
-        public SbSearchDoc()
-        {
-        }
-
         public string Title { get; set; }
-        public string Description { get; set; }
-        public string Content { get; set; }
+        public string Url { get; set; }
+        public IDictionary<string, string> Attributes { get; set; }
         public float Boost { get; set; }
 
+        public ParsedLink()
+        {
+            Boost = 1.0f;
+            Attributes = new Dictionary<string, string>();
+        }
+
+        void ParseFromXhtml(XmlNode aHrefNode)
+        {
+            // first, extract attributes
+            foreach (XmlAttribute xmlAttr in aHrefNode.Attributes) {
+                Attributes[xmlAttr.Name] = xmlAttr.Value;
+            }
+
+            // extract title and link
+            Title = Attributes.ContainsKey("title") ? Attributes["title"] : aHrefNode.InnerText;
+            Url = Attributes.ContainsKey("href") ? Attributes["href"] : "";
+        }
+
+        void ParseFromHtml(string html)
+        {
+            try {
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(html);
+                ParseFromXhtml(xmlDoc.DocumentElement);
+            } catch { } // TODO: handle specific exceptions
+        }
     }
 }

@@ -64,6 +64,9 @@ namespace SearchBoost.Net.Core.Engine
 
         public bool Index(SbSearchDoc indexDoc)
         {
+            if (indexDoc == null)
+                return true;
+
             if (Storage == null) {
                 try {
                     var client = SbApp.Instance.Container.Resolve<IIndexingService>();

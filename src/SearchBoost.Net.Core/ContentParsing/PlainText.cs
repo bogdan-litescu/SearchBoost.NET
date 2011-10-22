@@ -28,19 +28,38 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using SearchBoost.Net.Core.Engine;
 
-namespace SearchBoost.Net.Core.Engine
+namespace SearchBoost.Net.Core.ContentParsing
 {
-    public class SbSearchDoc
+    public class PlainText : IContentParser
     {
-        public SbSearchDoc()
+        public IList<string> MimeTypes { get; set; }
+        public IList<string> FileExtensions { get; set; }
+
+        public IList<ParsedContent> ParseRaw(string rawContent)
         {
+            return new ParsedContent[] {
+                new ParsedContent() {
+                    PlainContents = rawContent
+                }
+            };
         }
 
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Content { get; set; }
-        public float Boost { get; set; }
+        public IList<ParsedContent> ParseStream(Stream s)
+        {
+            throw new NotImplementedException();
+        }
 
+        public IList<ParsedContent> ParseFile(string filePath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<ParsedContent> ParseUrl(Uri url)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

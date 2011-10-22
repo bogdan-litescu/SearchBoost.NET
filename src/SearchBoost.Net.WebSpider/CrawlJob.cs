@@ -7,9 +7,9 @@ using Castle.MicroKernel.SubSystems.Conversion;
 namespace SearchBoost.Net.WebSpider
 {
     [Convertible]
-    public class CrawlOptions
+    public class CrawlJob
     {
-        public CrawlOptions(Uri url)
+        public CrawlJob(Uri url)
         {
             Url = url;
             TimeoutSec = 30;
