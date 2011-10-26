@@ -41,8 +41,11 @@ namespace SearchBoost.Net.Core.ContentParsing
 
         public IList<ParsedContent> ParseRaw(string rawContent)
         {
+            ParsedContent parsed = new ParsedContent();
+
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(rawContent);
+            ReadMeta(doc, ref parsed);
 
             foreach (string invalidNode in new string[] { "script", "style", "link", "object", "embed", "title" }) {
                 foreach (HtmlNode script in new List<HtmlNode>(doc.DocumentNode.Descendants(invalidNode)))
@@ -50,13 +53,8 @@ namespace SearchBoost.Net.Core.ContentParsing
             }
 
             // this is plain page, extract and index as HTML
-            ParsedContent parsed = new ParsedContent() {
-                //Title = opts.OverrideTitle,
-                //Description = opts.OverrideDesc,
-                PlainContents = doc.DocumentNode.SelectSingleNode("/html/body").InnerText
-            };
+            parsed.PlainContent = doc.DocumentNode.SelectSingleNode("/html/body").InnerText.Trim();
 
-            ReadMeta(doc, ref parsed);
             return new ParsedContent[] { parsed };
         }
 

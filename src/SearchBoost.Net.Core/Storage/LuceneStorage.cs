@@ -38,6 +38,7 @@ using Lucene.Net.Search;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Store;
 using SearchBoost.Net.Core.Engine;
+using SearchBoost.Net.Core.Extensions;
 
 namespace SearchBoost.Net.Core.Storage
 {
@@ -57,7 +58,7 @@ namespace SearchBoost.Net.Core.Storage
 
         public void Index(SbSearchDoc indexDoc)
         {
-            Logger.Debug(string.Format("Indexing content {0}...", indexDoc.Content));
+            Logger.Debug(string.Format("Indexing content {0}...", indexDoc.PlainContent));
 
             //create an analyzer to process the text
             Analyzer analyzer = new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_29);
@@ -67,7 +68,31 @@ namespace SearchBoost.Net.Core.Storage
 
             //create a document, add in a single field
             Document doc = new Document();
-            doc.Add(new Field("content", indexDoc.Content, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+            
+            // content
+            doc.Add(new Field("content", indexDoc.PlainContent, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+            
+            // content types, sources, categories
+            foreach (string type in indexDoc.ContentTypes)
+                doc.Add(new Field("type", type, Field.Store.YES, Field.Index.ANALYZED_NO_NORMS));
+
+            foreach (string source in indexDoc.Sources)
+                doc.Add(new Field("source", source, Field.Store.YES, Field.Index.ANALYZED_NO_NORMS));
+
+            foreach (string cat in indexDoc.Categories)
+                doc.Add(new Field("category", cat, Field.Store.YES, Field.Index.ANALYZED_NO_NORMS));
+
+            // date last modified
+            //doc.Add(new Field("lastmod_str", indexDoc.LastModified.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new NumericField("lastmod", Field.Store.YES, true)
+                .SetIntValue(indexDoc.LastModified.ToUnixTimestamp()));
+
+            // title, description, keywords
+            doc.Add(new Field("title", indexDoc.Title, Field.Store.YES, Field.Index.ANALYZED_NO_NORMS, Lucene.Net.Documents.Field.TermVector.WITH_POSITIONS_OFFSETS));
+            doc.Add(new Field("keywords", indexDoc.Keywords, Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field("desc", indexDoc.Description, Field.Store.YES, Field.Index.ANALYZED, Lucene.Net.Documents.Field.TermVector.WITH_POSITIONS_OFFSETS));
+            doc.Add(new Field("author", indexDoc.Author, Field.Store.YES, Field.Index.ANALYZED_NO_NORMS));
+            doc.Add(new Field("loc", indexDoc.Location, Field.Store.YES, Field.Index.ANALYZED_NO_NORMS));
 
             //write the document to the index
             indexWriter.AddDocument(doc);
@@ -89,7 +114,7 @@ namespace SearchBoost.Net.Core.Storage
             TopDocs docs = searcher.Search(query, 999999);
             List<SbSearchDoc> results = new List<SbSearchDoc>();
             foreach (ScoreDoc sdoc in docs.scoreDocs)
-                results.Add(new SbSearchDoc() { Content = searcher.Doc(sdoc.doc).Get("content") });
+                results.Add(new SbSearchDoc(searcher.Doc(sdoc.doc)));
             
             Logger.Info(string.Format("...{0} results found", results.Count));
 

@@ -52,8 +52,8 @@ namespace SearchBoost.Net.Tests.CliRemoteClient
                     app.SearchEngine.ClearIndex();
 
                     Console.WriteLine("Adding some content to remote index...");
-                    app.SearchEngine.Index(new SbSearchDoc() { Content = "This text comes from remote container..." });
-                    app.SearchEngine.Index(new SbSearchDoc() { Content = "Some other test container..." });
+                    app.SearchEngine.Index(new SbSearchDoc() { PlainContent = "This text comes from remote container..." });
+                    app.SearchEngine.Index(new SbSearchDoc() { PlainContent = "Some other test container..." });
 
                     Console.WriteLine("Searching remote index...");
                     app.SearchEngine.SearchAsync("container", docs => printResults(docs));
@@ -69,7 +69,7 @@ namespace SearchBoost.Net.Tests.CliRemoteClient
         private static void printResults(IList<SbSearchDoc> results)
         {
             foreach (SbSearchDoc result in results)
-                Console.WriteLine(result.Content);
+                Console.WriteLine(result.PlainContent);
         }
     }
 }

@@ -70,6 +70,7 @@
     <Compile Include="Engine\ISearchEngine.cs" />
     <Compile Include="Engine\SbSearchDoc.cs" />
     <Compile Include="Engine\SearchEngine.cs" />
+    <Compile Include="Extensions\DateTimeEx.cs" />
     <Compile Include="Installers\ServicesInstaller.cs" />
     <Compile Include="Indexers\IIndexer.cs" />
     <Compile Include="Services\ISearchService.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Storage\ISearchIndexStorage.cs" />
     <Compile Include="Storage\LuceneStorage.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

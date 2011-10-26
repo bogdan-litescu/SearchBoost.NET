@@ -33,36 +33,18 @@ using SearchBoost.Net.Core.Engine;
 
 namespace SearchBoost.Net.Core.ContentParsing
 {
-    public class ParsedContent
+    /// <summary>
+    /// Extends SbSearchDoc class with fields related to parsing
+    /// </summary>
+    public class ParsedContent : SbSearchDoc
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Author { get; set; }
-        public string PlainContents { get; set; }
         public IDictionary<string, string> Metadata { get; set; }
         public IList<ParsedLink> Links { get; set; }
-        public float Boost { get; set; }
 
         public ParsedContent()
         {
-            Title = "";
-            Description = "";
-            PlainContents = "";
-            Author = "";
-            Boost = 1.0f;
             Metadata = new Dictionary<string, string>();
             Links = new List<ParsedLink>();
-        }
-
-        public SbSearchDoc ToSearchDoc()
-        {
-            return new SbSearchDoc() {
-                Title = Title,
-                Description = Description,
-                Author = Author,
-                Content = PlainContents,
-                Boost = Boost
-            };
         }
     }
 }

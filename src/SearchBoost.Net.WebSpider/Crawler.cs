@@ -91,7 +91,12 @@ namespace SearchBoost.Net.WebSpider
             IList<IContentParser> parsersByMimeType = FindParser.ByMimeContentType(mimeContentType);
             foreach (IContentParser parser in parsersByMimeType) {
                 foreach (ParsedContent parsed in parser.ParseRaw(rawContent)) {
-                    SbApp.Instance.SearchEngine.Index(parsed.ToSearchDoc());
+
+                    // fill in the rest of the data
+                    parsed.Location = job.Url.ToString();
+                    parsed.Sources = new List<string>() { job.Url.Host };
+
+                    SbApp.Instance.SearchEngine.Index(parsed);
 
                     // if it has links, index them too
                     foreach (var link in parsed.Links) {

@@ -55,9 +55,9 @@ namespace SearchBoost.Net.UnitTests
         public void Basic()
         {
             ISearchEngine se = SbApp.Instance.SearchEngine;
-            se.Index(new SbSearchDoc() { Content = "Keyword entry 1" });
-            se.Index(new SbSearchDoc() { Content = "Keyword entry 2" });
-            se.Index(new SbSearchDoc() { Content = "Another entry 3" });
+            se.Index(new SbSearchDoc() { PlainContent = "Keyword entry 1" });
+            se.Index(new SbSearchDoc() { PlainContent = "Keyword entry 2" });
+            se.Index(new SbSearchDoc() { PlainContent = "Another entry 3" });
 
             // do a search
             Assert.AreEqual(2, se.Search("keyword").Count);

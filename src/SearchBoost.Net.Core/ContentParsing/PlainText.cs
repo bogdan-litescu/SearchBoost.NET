@@ -42,7 +42,8 @@ namespace SearchBoost.Net.Core.ContentParsing
         {
             return new ParsedContent[] {
                 new ParsedContent() {
-                    PlainContents = rawContent
+                    ContentTypes = new List<string>() { "text/plain", "txt" },
+                    PlainContent = rawContent.Trim()
                 }
             };
         }

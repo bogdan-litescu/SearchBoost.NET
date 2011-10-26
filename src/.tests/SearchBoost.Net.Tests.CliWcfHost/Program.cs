@@ -45,7 +45,7 @@ namespace SearchBoost.Net.Tests.CliWcfHost
 
             using (SbApp app = SbApp.Instance) {
 
-                app.SearchEngine.Index(new SbSearchDoc() { Content = "This is actually another index on the remote server that has the word container" });
+                app.SearchEngine.Index(new SbSearchDoc() { PlainContent = "This is actually another index on the remote server that has the word container" });
 
                 Console.WriteLine("Running service... (press any key to end service)");
                 Console.ReadKey(true);

@@ -44,6 +44,7 @@ namespace SearchBoost.Net.UnitTests
         {
             SbApp.RootFolder = AppDomain.CurrentDomain.BaseDirectory;
             SbApp.ConfigFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../config");
+            SbApp.Instance.SearchEngine.ClearIndex();
         }
 
         [TearDown]
@@ -63,6 +64,7 @@ namespace SearchBoost.Net.UnitTests
 
             // do a search
             Assert.AreEqual(1, se.Search("test").Count);
+            Assert.IsTrue(se.Search("test")[0].Sources.Contains("www.dnnsharp.com"));
             Assert.AreEqual(0, se.Search("zxcvbnm").Count);
 
             // clear index
@@ -82,6 +84,8 @@ namespace SearchBoost.Net.UnitTests
 
             // do a search
             Assert.AreEqual(1, se.Search("test").Count);
+            Assert.IsTrue(se.Search("test")[0].Sources.Contains("www.dnnsharp.com"));
+            Assert.AreEqual("Simple Test", se.Search("test")[0].Title);
             Assert.AreEqual(0, se.Search("zxcvbnm").Count);
 
             // clear index
@@ -101,7 +105,11 @@ namespace SearchBoost.Net.UnitTests
 
             // do a search
             Assert.AreEqual(1, se.Search("test").Count);
+            Assert.IsTrue(se.Search("test")[0].Sources.Contains("www.dnnsharp.com"));
+            Assert.AreEqual("Simple Test", se.Search("test")[0].Title);
             Assert.AreEqual(1, se.Search("test2").Count);
+            Assert.IsTrue(se.Search("test2")[0].Sources.Contains("www.dnnsharp.com"));
+            Assert.AreEqual("Simple Test", se.Search("test2")[0].Title);
             Assert.AreEqual(0, se.Search("zxcvbnm").Count);
 
             // clear index
@@ -122,7 +130,11 @@ namespace SearchBoost.Net.UnitTests
 
             // do a search
             Assert.AreEqual(1, se.Search("test").Count);
+            Assert.IsTrue(se.Search("test")[0].Sources.Contains("www.dnnsharp.com"));
+            Assert.AreEqual("Simple Test", se.Search("test")[0].Title);
             Assert.AreEqual(1, se.Search("test2").Count);
+            Assert.IsTrue(se.Search("test2")[0].Sources.Contains("www.dnnsharp.com"));
+            Assert.AreEqual("Simple Test", se.Search("test2")[0].Title);
             Assert.AreEqual(0, se.Search("zxcvbnm").Count);
 
             // clear index
