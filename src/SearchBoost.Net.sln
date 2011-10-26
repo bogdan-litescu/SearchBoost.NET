@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchBoost.Net.Tests.CliWc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchBoost.Net.UnitTests", ".tests\SearchBoost.Net.UnitTests\SearchBoost.Net.UnitTests.csproj", "{821C1C94-EF84-477F-8540-1784EB7C1C61}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installers", "Installers", "{ECC2BBD7-6722-436C-8FCD-8495BBD60F2E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

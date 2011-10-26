@@ -35,10 +35,16 @@ namespace SearchBoost.Net.Core.Engine
     {
         public SbSearchDoc()
         {
+            Title = "";
+            Description = "";
+            Author = "";
+            Content = "";
+            Boost = 1.0f;
         }
 
         public string Title { get; set; }
         public string Description { get; set; }
+        public string Author { get; set; }
         public string Content { get; set; }
         public float Boost { get; set; }
 

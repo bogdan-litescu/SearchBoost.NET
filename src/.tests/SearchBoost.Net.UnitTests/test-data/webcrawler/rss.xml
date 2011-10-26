@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+	<channel>
+
+		<title>Simple Feed</title>
+		<description>Some channel description.</description>
+		<link>http://www.dnnsharp.com</link>
+		<lastBuildDate>Sat, 13 Dec 2003 18:30:02 GMT</lastBuildDate>
+		<managingEditor>johndoe@example.com (John Doe)</managingEditor>
+
+		<item>
+			<title>Simple Page 1</title>
+			<link>http://www.dnnsharp.com/sb-tests/simple.html</link>
+			<guid isPermaLink="false">urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</guid>
+			<pubDate>Sat, 13 Dec 2003 18:30:02 GMT</pubDate>
+			<description>Some description.</description>
+		</item>
+		
+		<item>
+			<title>Simple Page 2</title>
+			<link>http://www.dnnsharp.com/sb-tests/simple2.html</link>
+			<guid isPermaLink="false">urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</guid>
+			<pubDate>Sat, 13 Dec 2003 18:30:02 GMT</pubDate>
+			<description>Some description.</description>
+		</item>
+
+	</channel>
+</rss>

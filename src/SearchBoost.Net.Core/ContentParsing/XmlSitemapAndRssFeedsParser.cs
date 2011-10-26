@@ -31,32 +31,59 @@ using System.Text;
 using System.IO;
 using SearchBoost.Net.Core.Engine;
 using HtmlAgilityPack;
+using System.Xml;
+using Castle.Core.Logging;
 
 namespace SearchBoost.Net.Core.ContentParsing
 {
-    public class HtmlParser : IContentParser
+    public class XmlSitemapAndRssFeedsParser : IContentParser
     {
         public IList<string> MimeTypes { get; set; }
         public IList<string> FileExtensions { get; set; }
+        public ILogger Logger { get; set; }
 
         public IList<ParsedContent> ParseRaw(string rawContent)
         {
-            HtmlDocument doc = new HtmlDocument();
-            doc.LoadHtml(rawContent);
-
-            foreach (string invalidNode in new string[] { "script", "style", "link", "object", "embed", "title" }) {
-                foreach (HtmlNode script in new List<HtmlNode>(doc.DocumentNode.Descendants(invalidNode)))
-                    script.Remove();
+            // This is RSS or Sitemap
+            XmlDocument xmlDoc = new XmlDocument();
+            try {
+                xmlDoc.LoadXml(rawContent);
+            } catch (Exception ex) {
+                Logger.Error("Invalid XML!", ex);
+                Logger.Debug(rawContent);
+                return new List<ParsedContent>();
             }
 
-            // this is plain page, extract and index as HTML
-            ParsedContent parsed = new ParsedContent() {
-                //Title = opts.OverrideTitle,
-                //Description = opts.OverrideDesc,
-                PlainContents = doc.DocumentNode.SelectSingleNode("/html/body").InnerText
-            };
+            // check type
+            var parsed = new ParsedContent();
 
-            ReadMeta(doc, ref parsed);
+            if (xmlDoc.DocumentElement.Name == "urlset") {
+                // this is a sitemap
+                XmlNamespaceManager mgr = new XmlNamespaceManager(xmlDoc.NameTable);
+                mgr.AddNamespace("ns", "http://www.sitemaps.org/schemas/sitemap/0.9");
+
+                foreach (XmlElement xmlUrl in xmlDoc.DocumentElement.SelectNodes("//ns:url", mgr)) {
+                    parsed.Links.Add(new ParsedLink() {
+                        Url = xmlUrl["loc"].InnerText.Trim()
+                    });
+                }
+
+            } else if (xmlDoc.DocumentElement.Name == "rss") {
+
+                try { parsed.Title = xmlDoc.DocumentElement["channel"]["title"].InnerText; } catch { }
+                try { parsed.Description = xmlDoc.DocumentElement["channel"]["description"].InnerText; } catch { }
+                try { parsed.Author = xmlDoc.DocumentElement["channel"]["managingEditor"].InnerText; } catch { }
+                try { parsed.Metadata["link"] = xmlDoc.DocumentElement["channel"]["link"].InnerText; } catch { }
+
+                foreach (XmlElement xmlUrl in xmlDoc.DocumentElement["channel"].SelectNodes("item")) {
+                    var link = new ParsedLink();
+                    link.Url = xmlUrl["link"].InnerText.Trim();
+                    try { link.Title = xmlUrl["title"].InnerText.Trim(); } catch { }
+                    try { link.Description = xmlUrl["description"].InnerText.Trim(); } catch { }
+                    parsed.Links.Add(link);
+                }
+            }
+
             return new ParsedContent[] { parsed };
         }
 

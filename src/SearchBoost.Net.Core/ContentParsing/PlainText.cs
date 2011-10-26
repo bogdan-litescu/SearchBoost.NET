@@ -49,12 +49,16 @@ namespace SearchBoost.Net.Core.ContentParsing
 
         public IList<ParsedContent> ParseStream(Stream s)
         {
-            throw new NotImplementedException();
+            using (StreamReader sr = new StreamReader(s)){
+                return ParseRaw(sr.ReadToEnd());
+            }
         }
 
         public IList<ParsedContent> ParseFile(string filePath)
         {
-            throw new NotImplementedException();
+            if (!File.Exists(filePath))
+                return new ParsedContent[0];
+            return ParseRaw(File.ReadAllText(filePath));
         }
 
         public IList<ParsedContent> ParseUrl(Uri url)

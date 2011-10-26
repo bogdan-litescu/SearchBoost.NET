@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContentParsing\XmlSitemapAndRssFeedsParser.cs" />
     <Compile Include="ContentParsing\ParsedLink.cs" />
     <Compile Include="ContentParsing\ParsedContent.cs" />
     <Compile Include="ContentParsing\HtmlParser.cs" />
@@ -70,7 +71,7 @@
     <Compile Include="Engine\SbSearchDoc.cs" />
     <Compile Include="Engine\SearchEngine.cs" />
     <Compile Include="Installers\ServicesInstaller.cs" />
-    <Compile Include="Publishers\IContentPublisher.cs" />
+    <Compile Include="Indexers\IIndexer.cs" />
     <Compile Include="Services\ISearchService.cs" />
     <Compile Include="Services\SearchService.cs" />
     <Compile Include="Services\IIndexingService.cs" />

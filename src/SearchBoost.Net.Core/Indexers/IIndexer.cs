@@ -29,10 +29,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SearchBoost.Net.Core.Publishers
+namespace SearchBoost.Net.Core.Indexers
 {
-    public interface IContentPublisher
+    public interface IIndexer
     {
-        void Publish();
+        void Index();
     }
 }

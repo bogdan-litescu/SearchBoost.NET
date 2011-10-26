@@ -28,7 +28,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SearchBoost.Net.Core.Publishers;
 using Castle.Core.Logging;
 using System.Net;
 using HtmlAgilityPack;
@@ -37,10 +36,11 @@ using SearchBoost.Net.Core.Engine;
 using System.IO;
 using SearchBoost.Net.Core;
 using SearchBoost.Net.Core.ContentParsing;
+using SearchBoost.Net.Core.Indexers;
 
 namespace SearchBoost.Net.WebSpider
 {
-    public class Crawler : IContentPublisher
+    public class Crawler : IIndexer
     {
         public Crawler(ILogger logger, IEnumerable<CrawlJob> urls)
         {
@@ -58,47 +58,46 @@ namespace SearchBoost.Net.WebSpider
         public ILogger Logger { get; set; }
         public IEnumerable<CrawlJob> Urls { get; set; }
 
-        public void Publish()
+        public void Index()
         {
             Logger.Info("Running web crawler...");
-            foreach (CrawlJob opts in Urls) {
+            foreach (CrawlJob job in Urls) {
+                Index(job);
+            }
+        }
 
-                Logger.Debug(string.Format("Parsing URL {0}", opts.Url));
+        void Index(CrawlJob job)
+        {
+            Logger.Debug(string.Format("Parsing URL {0}", job.Url));
 
-                // download content
-                IDictionary<string, string> httpHeaders;
-                string rawContent = Download(opts, out httpHeaders);
-                
-                // TODO: treat exceptions
+            // download content
+            IDictionary<string, string> httpHeaders;
+            string rawContent;
+            try {
+                rawContent = Download(job, out httpHeaders);
+            } catch (WebException ex) {
+                Logger.Error("Error downloading " + job.Url, ex);
+                return;
+            }
 
-                //// check content type
-                //// TODO: handle content types external to this component, for example to PDFs, Word Docx, etc
-                //SbSearchDoc sbDoc = null;
-                //if (httpHeaders["Content-Type"].StartsWith("text/plain")) {
-                //    sbDoc = new SbSearchDoc() {
-                //        Title = Path.GetFileName(opts.Url.ToString()),
-                //        Content = rawContent
-                //    };
-                //} else if (httpHeaders["Content-Type"].StartsWith("text/html")) {
-                //    sbDoc = ParseHtml(opts, rawContent);
-                //} 
-                ////else if (httpHeaders["Content-Type"].StartsWith("text/xml")) {
-                ////    // TODO: This is RSS or Sitemap
-                ////}
+            // TODO: treat exceptions
 
-                string mimeContentType = httpHeaders["Content-Type"];
-                if (mimeContentType.IndexOf(';') > 0)
-                    mimeContentType = mimeContentType.Substring(0, mimeContentType.IndexOf(';'));
+            string mimeContentType = httpHeaders["Content-Type"];
+            if (mimeContentType.IndexOf(';') > 0)
+                mimeContentType = mimeContentType.Substring(0, mimeContentType.IndexOf(';'));
 
-                Logger.Debug(string.Format("  > MIME Content Type: ", mimeContentType));
+            Logger.Debug(string.Format("  > MIME Content Type: ", mimeContentType));
 
-                IList<IContentParser> parsersByMimeType = FindParser.ByMimeContentType(mimeContentType);
-                foreach (IContentParser parser in parsersByMimeType) {
-                    foreach (ParsedContent parsed in parser.ParseRaw(rawContent)) {
-                        SbApp.Instance.SearchEngine.Index(parsed.ToSearchDoc());
+            IList<IContentParser> parsersByMimeType = FindParser.ByMimeContentType(mimeContentType);
+            foreach (IContentParser parser in parsersByMimeType) {
+                foreach (ParsedContent parsed in parser.ParseRaw(rawContent)) {
+                    SbApp.Instance.SearchEngine.Index(parsed.ToSearchDoc());
+
+                    // if it has links, index them too
+                    foreach (var link in parsed.Links) {
+                        Index(job.CreateJob(link));
                     }
                 }
-
             }
         }
 
@@ -123,42 +122,5 @@ namespace SearchBoost.Net.WebSpider
             return strResponse.Trim();
         }
 
-        //SbSearchDoc ParseHtml(CrawlOptions opts, string rawContent)
-        //{
-        //    HtmlDocument doc = new HtmlDocument();
-        //    doc.LoadHtml(rawContent);
-
-        //    foreach (string invalidNode in new string[] { "script", "style", "link", "object", "embed", "title" }) {
-        //        foreach (HtmlNode script in new List<HtmlNode>(doc.DocumentNode.Descendants(invalidNode)))
-        //            script.Remove();
-        //    }
-
-        //    // this is plain page, extract and index as HTML
-        //    SbSearchDoc sbDoc = new SbSearchDoc() {
-        //        Title = opts.OverrideTitle,
-        //        Description = opts.OverrideDesc,
-        //        Content = doc.DocumentNode.SelectSingleNode("/html/body").InnerText
-        //    };
-            
-        //    ReadMeta(doc, ref sbDoc);
-        //    return sbDoc;
-        //}
-
-
-        //void ReadMeta(HtmlDocument doc, ref SbSearchDoc sbDoc)
-        //{
-        //    // first, normalize values for meta name attribute
-        //    foreach (HtmlNode xmlMeta in doc.DocumentNode.SelectNodes("/html/head/meta")) {
-        //        xmlMeta.Attributes["name"].Value = xmlMeta.Attributes["name"].Value.ToLower();
-        //    }
-
-        //    if (string.IsNullOrEmpty(sbDoc.Title)) {
-        //        try { sbDoc.Title = doc.DocumentNode.SelectSingleNode("/html/head/title").InnerText.Trim(); } catch { }
-        //    }
-
-        //    if (string.IsNullOrEmpty(sbDoc.Description)) {
-        //        try { sbDoc.Description = doc.DocumentNode.SelectSingleNode("/html/head/meta[@name='description']").Attributes["content"].Value.Trim(); } catch { }
-        //    }
-        //}
     }
 }

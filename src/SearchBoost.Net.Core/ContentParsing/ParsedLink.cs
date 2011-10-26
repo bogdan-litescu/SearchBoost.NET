@@ -37,6 +37,7 @@ namespace SearchBoost.Net.Core.ContentParsing
     public class ParsedLink
     {
         public string Title { get; set; }
+        public string Description { get; set; }
         public string Url { get; set; }
         public IDictionary<string, string> Attributes { get; set; }
         public float Boost { get; set; }

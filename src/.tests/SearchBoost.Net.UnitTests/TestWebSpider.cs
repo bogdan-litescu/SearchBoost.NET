@@ -32,7 +32,7 @@ using NUnit.Framework;
 using SearchBoost.Net.Core;
 using System.IO;
 using SearchBoost.Net.Core.Engine;
-using SearchBoost.Net.Core.Publishers;
+using SearchBoost.Net.Core.Indexers;
 
 namespace SearchBoost.Net.UnitTests
 {
@@ -56,18 +56,18 @@ namespace SearchBoost.Net.UnitTests
         public void PlainText()
         {
             ISearchEngine se = SbApp.Instance.SearchEngine;
-            IContentPublisher webSpiderPlain = SbApp.Instance.Container.Resolve<IContentPublisher>("webSpiderPlain");
+            IIndexer webSpiderPlain = SbApp.Instance.Container.Resolve<IIndexer>("webSpiderPlain");
 
             // execute URLs from configuration
-            webSpiderPlain.Publish();
+            webSpiderPlain.Index();
 
             // do a search
-            Assert.AreEqual(1, se.Search("information").Count);
+            Assert.AreEqual(1, se.Search("test").Count);
             Assert.AreEqual(0, se.Search("zxcvbnm").Count);
 
             // clear index
             se.ClearIndex();
-            Assert.AreEqual(0, se.Search("information").Count);
+            Assert.AreEqual(0, se.Search("test").Count);
             Assert.AreEqual(0, se.Search("zxcvbnm").Count);
         }
 
@@ -75,18 +75,60 @@ namespace SearchBoost.Net.UnitTests
         public void BasicHtml()
         {
             ISearchEngine se = SbApp.Instance.SearchEngine;
-            IContentPublisher webSpiderHtml = SbApp.Instance.Container.Resolve<IContentPublisher>("webSpiderHtml");
+            IIndexer webSpiderHtml = SbApp.Instance.Container.Resolve<IIndexer>("webSpiderHtml");
 
             // execute URLs from configuration
-            webSpiderHtml.Publish();
+            webSpiderHtml.Index();
 
             // do a search
-            Assert.AreEqual(1, se.Search("Twitter").Count);
+            Assert.AreEqual(1, se.Search("test").Count);
             Assert.AreEqual(0, se.Search("zxcvbnm").Count);
 
             // clear index
             se.ClearIndex();
-            Assert.AreEqual(0, se.Search("Twitter").Count);
+            Assert.AreEqual(0, se.Search("test").Count);
+            Assert.AreEqual(0, se.Search("zxcvbnm").Count);
+        }
+
+        [Test]
+        public void BasicSitemap()
+        {
+            ISearchEngine se = SbApp.Instance.SearchEngine;
+            IIndexer webSpiderSitemap = SbApp.Instance.Container.Resolve<IIndexer>("webSpiderSitemap");
+
+            // execute URLs from configuration
+            webSpiderSitemap.Index();
+
+            // do a search
+            Assert.AreEqual(1, se.Search("test").Count);
+            Assert.AreEqual(1, se.Search("test2").Count);
+            Assert.AreEqual(0, se.Search("zxcvbnm").Count);
+
+            // clear index
+            se.ClearIndex();
+            Assert.AreEqual(0, se.Search("test").Count);
+            Assert.AreEqual(0, se.Search("test2").Count);
+            Assert.AreEqual(0, se.Search("zxcvbnm").Count);
+        }
+
+        [Test]
+        public void BasicRss()
+        {
+            ISearchEngine se = SbApp.Instance.SearchEngine;
+            IIndexer webSpiderRss = SbApp.Instance.Container.Resolve<IIndexer>("webSpiderRss");
+
+            // execute URLs from configuration
+            webSpiderRss.Index();
+
+            // do a search
+            Assert.AreEqual(1, se.Search("test").Count);
+            Assert.AreEqual(1, se.Search("test2").Count);
+            Assert.AreEqual(0, se.Search("zxcvbnm").Count);
+
+            // clear index
+            se.ClearIndex();
+            Assert.AreEqual(0, se.Search("test").Count);
+            Assert.AreEqual(0, se.Search("test2").Count);
             Assert.AreEqual(0, se.Search("zxcvbnm").Count);
         }
     }
