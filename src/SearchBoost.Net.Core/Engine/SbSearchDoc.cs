@@ -57,6 +57,10 @@ namespace SearchBoost.Net.Core.Engine
             Boost = 1.0f;
         }
 
+        /// <summary>
+        /// Load data directly from lucene document
+        /// </summary>
+        /// <param name="doc"></param>
         public SbSearchDoc(Lucene.Net.Documents.Document doc)
         {
             ContentTypes = doc.GetValues("type");

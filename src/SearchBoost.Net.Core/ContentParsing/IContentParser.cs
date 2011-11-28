@@ -52,27 +52,27 @@ namespace SearchBoost.Net.Core.ContentParsing
         /// </summary>
         /// <param name="rawContent"></param>
         /// <returns>List of parsed content, most of the time with only one element.</returns>
-        IList<ParsedContent> ParseRaw(string rawContent);
+        IList<ParsedContent> ParseRaw(string rawContent, FollowLinksOptions linkOpts);
 
         /// <summary>
         /// Parse content from a stream. This can be from a file, a web response and so on.
         /// </summary>
         /// <param name="s"></param>
         /// <returns>List of parsed content, most of the time with only one element.</returns>
-        IList<ParsedContent> ParseStream(Stream s);
+        IList<ParsedContent> ParseStream(Stream s, FollowLinksOptions linkOpts);
 
         /// <summary>
         /// Parse content from file on disk.
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns>List of parsed content, most of the time with only one element.</returns>
-        IList<ParsedContent> ParseFile(string filePath);
+        IList<ParsedContent> ParseFile(string filePath, FollowLinksOptions linkOpts);
 
         /// <summary>
         /// Parse content from give URL.
         /// </summary>
         /// <param name="url"></param>
         /// <returns>List of parsed content, most of the time with only one element.</returns>
-        IList<ParsedContent> ParseUrl(Uri url);
+        IList<ParsedContent> ParseUrl(Uri url, FollowLinksOptions linkOpts);
     }
 }

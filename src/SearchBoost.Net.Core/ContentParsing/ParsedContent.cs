@@ -40,11 +40,13 @@ namespace SearchBoost.Net.Core.ContentParsing
     {
         public IDictionary<string, string> Metadata { get; set; }
         public IList<ParsedLink> Links { get; set; }
+        public FollowLinksOptions LinkOpts { get; set; }
 
         public ParsedContent()
         {
             Metadata = new Dictionary<string, string>();
             Links = new List<ParsedLink>();
+            LinkOpts = new FollowLinksOptions();
         }
     }
 }

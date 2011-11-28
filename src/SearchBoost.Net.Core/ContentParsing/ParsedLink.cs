@@ -31,6 +31,7 @@ using System.Text;
 using System.IO;
 using SearchBoost.Net.Core.Engine;
 using System.Xml;
+using HtmlAgilityPack;
 
 namespace SearchBoost.Net.Core.ContentParsing
 {
@@ -48,11 +49,38 @@ namespace SearchBoost.Net.Core.ContentParsing
             Attributes = new Dictionary<string, string>();
         }
 
+        public ParsedLink(XmlNode aHrefNode)
+        {
+            Boost = 1.0f;
+            Attributes = new Dictionary<string, string>();
+            ParseFromXhtml(aHrefNode);
+        }
+
+        public ParsedLink(HtmlNode aHrefNode)
+        {
+            Boost = 1.0f;
+            Attributes = new Dictionary<string, string>();
+            ParseFromXhtml(aHrefNode);
+        }
+
+        
         void ParseFromXhtml(XmlNode aHrefNode)
         {
             // first, extract attributes
             foreach (XmlAttribute xmlAttr in aHrefNode.Attributes) {
                 Attributes[xmlAttr.Name] = xmlAttr.Value;
+            }
+
+            // extract title and link
+            Title = Attributes.ContainsKey("title") ? Attributes["title"] : aHrefNode.InnerText;
+            Url = Attributes.ContainsKey("href") ? Attributes["href"] : "";
+        }
+
+        void ParseFromXhtml(HtmlNode aHrefNode)
+        {
+            // first, extract attributes
+            foreach (HtmlAttribute attr in aHrefNode.Attributes) {
+                Attributes[attr.Name] = attr.Value;
             }
 
             // extract title and link

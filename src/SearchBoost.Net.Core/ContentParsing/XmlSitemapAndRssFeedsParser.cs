@@ -42,7 +42,7 @@ namespace SearchBoost.Net.Core.ContentParsing
         public IList<string> FileExtensions { get; set; }
         public ILogger Logger { get; set; }
 
-        public IList<ParsedContent> ParseRaw(string rawContent)
+        public IList<ParsedContent> ParseRaw(string rawContent, FollowLinksOptions linkOpts)
         {
             // This is RSS or Sitemap
             XmlDocument xmlDoc = new XmlDocument();
@@ -84,24 +84,28 @@ namespace SearchBoost.Net.Core.ContentParsing
                 }
             }
 
+            parsed.LinkOpts = new FollowLinksOptions();
+            parsed.LinkOpts.Follow = true;
+            parsed.LinkOpts.CurrentDepth = 1;
+
             return new ParsedContent[] { parsed };
         }
 
-        public IList<ParsedContent> ParseStream(Stream s)
+        public IList<ParsedContent> ParseStream(Stream s, FollowLinksOptions linkOpts)
         {
             using (StreamReader sr = new StreamReader(s)) {
-                return ParseRaw(sr.ReadToEnd());
+                return ParseRaw(sr.ReadToEnd(), linkOpts);
             }
         }
 
-        public IList<ParsedContent> ParseFile(string filePath)
+        public IList<ParsedContent> ParseFile(string filePath, FollowLinksOptions linkOpts)
         {
             if (!File.Exists(filePath))
                 return new ParsedContent[0];
-            return ParseRaw(File.ReadAllText(filePath));
+            return ParseRaw(File.ReadAllText(filePath), linkOpts);
         }
 
-        public IList<ParsedContent> ParseUrl(Uri url)
+        public IList<ParsedContent> ParseUrl(Uri url, FollowLinksOptions linkOpts)
         {
             throw new NotImplementedException();
         }

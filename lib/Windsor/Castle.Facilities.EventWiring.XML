@@ -4,9 +4,9 @@
         <name>Castle.Facilities.EventWiring</name>
     </assembly>
     <members>
-        <member name="T:Castle.Facilities.EventWiring.EventSubscribers">
+        <member name="T:Castle.Facilities.EventWiring.NaiveMethodNameExtractor">
             <summary>
-              Collects information about subscribers for given event
+              Extracts MethodInfo of metho invoked in delegate. Based on ILReader class from http://www.gocosmos.org project
             </summary>
         </member>
         <member name="T:Castle.Facilities.EventWiring.EventWiringException">
@@ -33,6 +33,11 @@
             </summary>
             <param name="info">The object that holds the serialized object data.</param>
             <param name="context">The contextual information about the source or destination.</param>
+        </member>
+        <member name="T:Castle.Facilities.EventWiring.EventSubscribers">
+            <summary>
+              Collects information about subscribers for given event
+            </summary>
         </member>
         <member name="T:Castle.Facilities.EventWiring.EventWiringFacility">
             <summary>
@@ -177,11 +182,6 @@
               Gets the handler method name.
             </summary>
             <value>The handler.</value>
-        </member>
-        <member name="T:Castle.Facilities.EventWiring.NaiveMethodNameExtractor">
-            <summary>
-              Extracts MethodInfo of metho invoked in delegate. Based on ILReader class from http://www.gocosmos.org project
-            </summary>
         </member>
     </members>
 </doc>

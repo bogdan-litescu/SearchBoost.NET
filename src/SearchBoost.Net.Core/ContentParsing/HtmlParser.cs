@@ -39,7 +39,7 @@ namespace SearchBoost.Net.Core.ContentParsing
         public IList<string> MimeTypes { get; set; }
         public IList<string> FileExtensions { get; set; }
 
-        public IList<ParsedContent> ParseRaw(string rawContent)
+        public IList<ParsedContent> ParseRaw(string rawContent, FollowLinksOptions linkOpts)
         {
             ParsedContent parsed = new ParsedContent();
 
@@ -52,27 +52,43 @@ namespace SearchBoost.Net.Core.ContentParsing
                     script.Remove();
             }
 
+            HtmlNode body = doc.DocumentNode.SelectSingleNode("/html/body");
+            if (body == null)
+                return new ParsedContent[] { parsed };
+
+            // extract links to foolow
+            if (true) {
+                HtmlNodeCollection links = body.SelectNodes("//a");
+                if (links != null) {
+                    foreach (HtmlNode a in links) {
+                        parsed.Links.Add(new ParsedLink(a));
+                    }
+                }
+            }
+            
             // this is plain page, extract and index as HTML
-            parsed.PlainContent = doc.DocumentNode.SelectSingleNode("/html/body").InnerText.Trim();
+            parsed.PlainContent = body.InnerText.Trim();
+            parsed.LinkOpts = linkOpts;
+            parsed.LinkOpts.CurrentDepth++;
 
             return new ParsedContent[] { parsed };
         }
 
-        public IList<ParsedContent> ParseStream(Stream s)
+        public IList<ParsedContent> ParseStream(Stream s, FollowLinksOptions linkOpts)
         {
             using (StreamReader sr = new StreamReader(s)) {
-                return ParseRaw(sr.ReadToEnd());
+                return ParseRaw(sr.ReadToEnd(), linkOpts);
             }
         }
 
-        public IList<ParsedContent> ParseFile(string filePath)
+        public IList<ParsedContent> ParseFile(string filePath, FollowLinksOptions linkOpts)
         {
             if (!File.Exists(filePath))
                 return new ParsedContent[0];
-            return ParseRaw(File.ReadAllText(filePath));
+            return ParseRaw(File.ReadAllText(filePath), linkOpts);
         }
 
-        public IList<ParsedContent> ParseUrl(Uri url)
+        public IList<ParsedContent> ParseUrl(Uri url, FollowLinksOptions linkOpts)
         {
             throw new NotImplementedException();
         }

@@ -42,26 +42,27 @@ namespace SearchBoost.Net.WebSpider
 {
     public class Crawler : IIndexer
     {
-        public Crawler(ILogger logger, IEnumerable<CrawlJob> urls)
+        public Crawler(ILogger logger, IEnumerable<CrawlJob> crawlJobs)
         {
             Logger = logger;
-            Urls = urls;
+            CrawlJobs = crawlJobs;
 
             logger.Info("Web Spider instantiated...");
             if (logger.IsDebugEnabled) {
                 logger.Debug("List of URLs to index:");
-                foreach (CrawlJob u in urls)
+                foreach (CrawlJob u in crawlJobs)
                     logger.Debug(string.Format("  > {0}", u.Url.ToString()));
             }
         }
 
         public ILogger Logger { get; set; }
-        public IEnumerable<CrawlJob> Urls { get; set; }
+        public IEnumerable<CrawlJob> CrawlJobs { get; set; }
 
         public void Index()
         {
             Logger.Info("Running web crawler...");
-            foreach (CrawlJob job in Urls) {
+            foreach (CrawlJob job in CrawlJobs) {
+                job.LinkOpts.CurrentDepth = 0;
                 Index(job);
             }
         }
@@ -73,7 +74,7 @@ namespace SearchBoost.Net.WebSpider
             // download content
             IDictionary<string, string> httpHeaders;
             string rawContent;
-            try {
+            try {   
                 rawContent = Download(job, out httpHeaders);
             } catch (WebException ex) {
                 Logger.Error("Error downloading " + job.Url, ex);
@@ -90,7 +91,7 @@ namespace SearchBoost.Net.WebSpider
 
             IList<IContentParser> parsersByMimeType = FindParser.ByMimeContentType(mimeContentType);
             foreach (IContentParser parser in parsersByMimeType) {
-                foreach (ParsedContent parsed in parser.ParseRaw(rawContent)) {
+                foreach (ParsedContent parsed in parser.ParseRaw(rawContent, job.LinkOpts)) {
 
                     // fill in the rest of the data
                     parsed.Location = job.Url.ToString();
@@ -99,8 +100,10 @@ namespace SearchBoost.Net.WebSpider
                     SbApp.Instance.SearchEngine.Index(parsed);
 
                     // if it has links, index them too
-                    foreach (var link in parsed.Links) {
-                        Index(job.CreateJob(link));
+                    if (parsed.LinkOpts.Follow && (parsed.LinkOpts.MaxDepth == -1 || parsed.LinkOpts.CurrentDepth <= parsed.LinkOpts.MaxDepth)) {
+                        foreach (var link in parsed.Links) {
+                            Index(job.CreateJob(link));
+                        }
                     }
                 }
             }
